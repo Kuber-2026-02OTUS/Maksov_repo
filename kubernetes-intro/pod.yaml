@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: web
+  namespace: homework
+  labels:
+    app: k8s-homework1
+spec:
+  initContainers:
+    - name: download-html
+      image: busybox:latest
+      command: ["wget", "-O", "/init/index.html", "-c", "http://info.cern.ch"]
+      volumeMounts:
+      - name: workdir
+        mountPath: "/init"
+  containers:
+  - name: web-server
+    image: python:3.12-alpine
+    lifecycle:
+      preStop:
+        exec: ["/bin/sh", "-c", "rm -f /homework/index.html"]
+    command: ["/bin/sh", "-c", "python -m http.server 8000 -d /homework"]
+    ports:
+    - containerPort: 8000
+    volumeMounts:
+    - name: workdir
+      mountPath: "/homework"
+  volumes:
+  - name: workdir
+    emptyDir: {}
+  
