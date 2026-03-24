@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web-deployment
+  labels:
+    app: web-server
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  selector:
+    matchLabels:
+      app: web-server
+  template:
+    metadata:
+      labels:
+        app: web-server
+    spec:
+      initContainers:
+      - name: download-html
+        image: busybox:latest
+        command: ["wget", "-O", "/init/index.html", "-c", "http://info.cern.ch"]
+        volumeMounts:
+        - name: workdir
+          mountPath: "/init"
+      containers:
+      - name: web-server
+        image: python:3.12-alpine
+        lifecycle:
+          preStop:
+            exec: 
+              command: ["/bin/sh", "-c", "rm -f /homework/index.html"]
+        readinessProbe:
+            httpGet:
+              path: /index.html
+              port: 8000
+            initialDelaySeconds: 3
+            periodSeconds: 5
+        command: ["/bin/sh", "-c", "python -m http.server 8000 -d /homework"]
+        ports:
+        - containerPort: 8000
+        volumeMounts:
+        - name: workdir
+          mountPath: "/homework"
+      volumes:
+      - name: workdir
+        emptyDir: {}
