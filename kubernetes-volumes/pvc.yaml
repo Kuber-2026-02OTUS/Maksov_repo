@@ -4,6 +4,7 @@ metadata:
   name: dynamic-pvc-web
   namespace: homework
 spec:
+  storageClassName: local-path
   accessModes:
     - ReadWriteOnce
   resources:

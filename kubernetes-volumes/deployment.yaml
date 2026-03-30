@@ -5,12 +5,7 @@ metadata:
   labels:
     app: web-server
 spec:
-  replicas: 3
-  strategy:
-    type: RollingUpdate
-    rollingUpdate:
-      maxUnavailable: 1
-      maxSurge: 1
+  replicas: 1
   selector:
     matchLabels:
       app: web-server
@@ -23,9 +18,9 @@ spec:
       - name: download-html
         image: busybox:latest
         command: ["wget", "-O", "/init/index.html", "-c", "http://info.cern.ch"]
-      volumeMounts:
-        - name: shared-data
-          mountPath: "/homework"
+        volumeMounts:
+          - name: shared-data
+            mountPath: "/init"
       containers:
       - name: web-server
         image: python:3.12-alpine
