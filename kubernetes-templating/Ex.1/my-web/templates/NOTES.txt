@@ -2,7 +2,7 @@
 
 Открой в браузере:
 
-http://{{ .Values.ingress.host }}
+http://{{ .Values.ingress.hosts.host }}
 
 Или если ingress выключен:
 
