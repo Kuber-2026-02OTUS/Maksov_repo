@@ -1,0 +1,59 @@
+# Default values for my-web.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+namespace: homework
+# This will set the replicaset count more information can be found here: https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/
+
+
+replicaCount: 1
+
+
+
+# This sets the container image more information can be found here: https://kubernetes.io/docs/concepts/containers/images/
+initContainer:
+  image:
+    repository: busybox
+    tag: "1.36"
+
+image:
+  repository: python
+  # This sets the pull policy for images.
+  # Overrides the image tag whose default is the chart appVersion.
+  tag: "3.12-alpine"
+
+
+
+# This is for setting up a service more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/
+service:
+  # This sets the service type more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
+  type: ClusterIP
+  # This sets the ports more information can be found here: https://kubernetes.io/docs/concepts/services-networking/service/#field-spec-ports
+  port: 80
+  targetPort: 8000
+
+# This block is for setting up the ingress for more information can be found here: https://kubernetes.io/docs/concepts/services-networking/ingress/
+ingress:
+  enabled: true
+  className: "nginx"
+  hosts:
+    - host: homework.otus
+      paths:
+        - path: /
+          pathType: Prefix
+    # - secretName: chart-example-tls
+    #   hosts:
+    #     - chart-example.local
+
+# This is to setup the liveness and readiness probes more information can be found here: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
+probes:
+  liveness:
+    enabled: false
+  readiness:
+    enabled: true
+    initialDelaySeconds: 5
+    periodSeconds: 10
+
+persistence:
+  accessMode: ReadWriteOnce
+  size: 1Gi
+

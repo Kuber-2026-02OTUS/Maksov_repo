@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: dynamic-pvc-{{ .Release.Name }}
+  namespace: {{ .Values.namespace }}
+spec:
+  storageClassName: local-path
+  accessModes:
+    - {{ .Values.persistence.accessMode }}
+  resources:
+    requests:
+      storage: {{.Values.persistence.size }}

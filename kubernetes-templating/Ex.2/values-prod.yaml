@@ -1,0 +1,30 @@
+controller:
+  replicaCount: 5
+  controllerOnly: false
+
+image:
+  repository: bitnamilegacy/kafka
+  tag: 3.5.2-debian-11-r0
+
+listeners:
+  client:
+    protocol: SASL_PLAINTEXT
+  controller:
+    protocol: SASL_PLAINTEXT
+  interbroker:
+    protocol: SASL_PLAINTEXT
+
+sasl:
+  enabledMechanisms: PLAIN
+  interBrokerMechanism: PLAIN
+  controllerMechanism: PLAIN
+  interbroker:
+    user: inter_broker_user
+    password: interbroker-password
+  controller:
+    user: controller_user
+    password: controller-password
+  client:
+    users:
+      - app
+    passwords: "Pa$$w0rd86"
