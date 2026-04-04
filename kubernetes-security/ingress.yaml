@@ -16,7 +16,7 @@ spec:
                 name: homework-service
                 port:
                   number: 80
-          - path: /conf/file
+          - path: /metrics
             pathType: Prefix
             backend:
               service:
