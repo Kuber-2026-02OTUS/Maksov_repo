@@ -2,9 +2,9 @@ apiVersion: otus.homework/v1
 kind: MySQL
 metadata:
   name: homework-mysql
-  namespace: homework
+  namespace: default
 spec:
   image: mysql:8.0
   database: homeworkdb
   password: superpassword
-  storage_size: 1Gi
+  storage_size: 2Gi
