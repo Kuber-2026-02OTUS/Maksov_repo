@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: homework-mysql-pv
+spec:
+  storageClassName: "local-path"  # Явно пустая строка
+  capacity:
+    storage: 2Gi
+  accessModes:
+    - ReadWriteOnce
+  local:
+    path: "/mnt/data" # или ваш путь
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+            - docker-desktop
