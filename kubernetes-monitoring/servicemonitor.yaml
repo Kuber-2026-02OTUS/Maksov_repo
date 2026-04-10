@@ -1,0 +1,19 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: nginx-metrics-monitor
+  namespace: monitoring
+  labels:
+    # Важно: эта метка должна совпадать с той, что ищет Prometheus (по умолчанию release: prometheus-stack)
+    release: prometheus-stack
+spec:
+  selector:
+    matchLabels:
+      app: nginx-metrics # Этот label должен совпадать с labels сервиса
+  endpoints:
+  - port: metrics # Имя порта из Service
+    path: /metrics  # Путь, по которому exporter отдает метрики
+    interval: 30s
+  namespaceSelector:
+    matchNames:
+    - homework
