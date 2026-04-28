@@ -1,0 +1,9 @@
+tolerations:
+  - key: node-role
+    operator: Equal
+    value: infra
+    effect: NoSchedule
+
+config:
+  clients:
+    - url: http://loki-gateway.monitoring.svc.cluster.local/loki/api/v1/push
